@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Instagram | Cristina Blanco / Caray</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1ea;
+      --card: #fffaf3;
+      --ink: #211b16;
+      --muted: #75685c;
+      --line: #e5d8c8;
+      --gold: #b18a55;
+      --brown: #5b4632;
+      --cream: #fbf6ef;
+      --green: #63725a;
+      --shadow: 0 18px 45px rgba(62, 43, 26, 0.08);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(177, 138, 85, 0.18), transparent 32rem),
+        linear-gradient(135deg, #f8f2ea 0%, #efe3d3 100%);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .page {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 32px 22px 56px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      gap: 22px;
+      align-items: stretch;
+      margin-bottom: 22px;
+    }
+
+    .hero-main, .hero-side, .card {
+      background: rgba(255, 250, 243, 0.88);
+      border: 1px solid rgba(229, 216, 200, 0.9);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-main { padding: 34px; }
+    .hero-side { padding: 26px; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(177, 138, 85, 0.13);
+      color: var(--brown);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(34px, 5vw, 62px);
+      line-height: 0.98;
+      margin: 0 0 18px;
+      letter-spacing: -0.04em;
+    }
+
+    h2 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 30px;
+      margin: 0 0 16px;
+      letter-spacing: -0.025em;
+    }
+
+    h3 { margin: 0 0 8px; font-size: 18px; }
+    p { margin: 0; color: var(--muted); }
+
+    .hero-copy {
+      max-width: 830px;
+      font-size: 18px;
+      color: var(--muted);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .pill {
+      padding: 10px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.45);
+      color: var(--brown);
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .side-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--gold);
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .side-number {
+      font-size: 42px;
+      font-weight: 850;
+      letter-spacing: -0.04em;
+      margin-bottom: 4px;
+    }
+
+    .side-note { color: var(--muted); font-size: 15px; }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .metrics {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .card { padding: 24px; }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 750;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 10px;
+    }
+
+    .metric-value {
+      font-size: 34px;
+      font-weight: 850;
+      letter-spacing: -0.035em;
+      color: var(--ink);
+    }
+
+    .metric-sub {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .two-col { grid-template-columns: 1fr 1fr; }
+    .three-col { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .insight {
+      border-left: 4px solid var(--gold);
+      padding-left: 15px;
+      margin-top: 14px;
+    }
+
+    .chart-wrap {
+      height: 310px;
+      position: relative;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 16px;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 13px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: rgba(177, 138, 85, 0.13);
+      color: var(--brown);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    .tag {
+      display: inline-flex;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(99, 114, 90, .13);
+      color: var(--green);
+      font-weight: 750;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .tag.gold { background: rgba(177, 138, 85, .16); color: var(--brown); }
+    .tag.dark { background: rgba(33, 27, 22, .08); color: var(--ink); }
+
+    .list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .list li {
+      background: rgba(255,255,255,.45);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 15px;
+    }
+
+    .video-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .video-card .hook {
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      font-size: 21px;
+      line-height: 1.15;
+    }
+
+    .cta-box {
+      background: #211b16;
+      color: #fffaf3;
+      border-radius: var(--radius);
+      padding: 30px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      align-items: center;
+      box-shadow: var(--shadow);
+    }
+
+    .cta-box p { color: rgba(255,250,243,.78); }
+    .cta-box h2 { margin-bottom: 8px; }
+
+    .footer {
+      color: var(--muted);
+      text-align: center;
+      margin-top: 22px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 960px) {
+      .hero, .two-col, .three-col { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .cta-box { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .page { padding: 18px 12px 36px; }
+      .hero-main, .hero-side, .card { padding: 20px; }
+      .metrics { grid-template-columns: 1fr; }
+      table { font-size: 12px; }
+      th, td { padding: 10px 8px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .hero-main, .hero-side, .card, .cta-box { box-shadow: none; break-inside: avoid; }
+      .page { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="hero-main">
+        <div class="eyebrow">Instagram Performance Dashboard</div>
+        <h1>Cristina Blanco / Caray</h1>
+        <p class="hero-copy">
+          Reporte de desempeño del 9 de abril al 8 de mayo de 2026. El análisis muestra que las propiedades generan alcance, pero los contenidos educativos y de proceso generan mayor confianza e interacción proporcional.
+        </p>
+        <div class="pill-row">
+          <span class="pill">Cliente Primero</span>
+          <span class="pill">Servicio 360</span>
+          <span class="pill">Marketing inmobiliario premium</span>
+          <span class="pill">Estrategia para grabación</span>
+        </div>
+      </div>
+      <aside class="hero-side">
+        <div class="side-title">Lectura principal</div>
+        <div class="side-number">3.92%</div>
+        <p class="side-note">Tasa de interacción sobre alcance total. Hay oportunidad de convertir mejor el alcance en comentarios, guardados, DMs y seguidores.</p>
+      </aside>
+    </section>
+
+    <section class="grid metrics">
+      <article class="card"><div class="metric-label">Publicaciones</div><div class="metric-value">21</div><div class="metric-sub">piezas analizadas</div></article>
+      <article class="card"><div class="metric-label">Visualizaciones</div><div class="metric-value">8,280</div><div class="metric-sub">total del periodo</div></article>
+      <article class="card"><div class="metric-label">Alcance</div><div class="metric-value">3,338</div><div class="metric-sub">cuentas alcanzadas</div></article>
+      <article class="card"><div class="metric-label">Interacciones</div><div class="metric-value">131</div><div class="metric-sub">likes + comentarios + guardados + compartidos</div></article>
+      <article class="card"><div class="metric-label">Me gusta</div><div class="metric-value">102</div><div class="metric-sub">reacción principal</div></article>
+      <article class="card"><div class="metric-label">Compartidos</div><div class="metric-value">13</div><div class="metric-sub">señal de valor útil</div></article>
+      <article class="card"><div class="metric-label">Guardados</div><div class="metric-value">11</div><div class="metric-sub">contenido para consultar luego</div></article>
+      <article class="card"><div class="metric-label">Seguidores</div><div class="metric-value">4</div><div class="metric-sub">conversión baja: 0.12% sobre alcance</div></article>
+    </section>
+
+    <section class="grid two-col">
+      <article class="card">
+        <h2>Desempeño por formato</h2>
+        <div class="chart-wrap"><canvas id="formatChart"></canvas></div>
+        <div class="insight"><p><strong>Insight:</strong> las secuencias concentran el alcance, pero los reels e imágenes generan más interacción proporcional. La estrategia debe combinar propiedades + educación + marca personal.</p></div>
+      </article>
+      <article class="card">
+        <h2>Interacción por formato</h2>
+        <div class="chart-wrap"><canvas id="engagementChart"></canvas></div>
+        <div class="insight"><p><strong>Lectura:</strong> los reels alcanzaron 9.00% de interacción sobre alcance, mucho más que las secuencias con 2.28%. Ahí hay una oportunidad clara para el contenido de autoridad.</p></div>
+      </article>
+    </section>
+
+    <section class="grid two-col">
+      <article class="card">
+        <h2>Qué funcionó</h2>
+        <ul class="list">
+          <li><strong>Propiedades en Pozos de Santa Ana:</strong> lograron el mayor alcance del periodo.</li>
+          <li><strong>Reels educativos:</strong> conectaron mejor con la audiencia y generaron más interacción proporcional.</li>
+          <li><strong>Contenido de transformación:</strong> el mensaje “Algo está cambiando…” generó curiosidad sin sonar agresivo.</li>
+          <li><strong>Temas de prevención:</strong> inventarios, errores y claridad en procesos funcionan bien para Servicio 360.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>Qué mejorar</h2>
+        <ul class="list">
+          <li><strong>Conversión:</strong> 4 seguimientos es bajo para el alcance obtenido. Faltan CTAs más específicos.</li>
+          <li><strong>Propiedades:</strong> necesitan más enfoque: cliente ideal, diferenciador, razón de valor y siguiente paso.</li>
+          <li><strong>Conversación:</strong> solo 5 comentarios; hay que pedir respuestas fáciles y concretas.</li>
+          <li><strong>Autoridad:</strong> publicar más criterios, errores comunes, checklists y explicación del acompañamiento.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>Top publicaciones del periodo</h2>
+      <table>
+        <thead>
+          <tr><th>Contenido</th><th>Formato</th><th>Visualizaciones</th><th>Alcance</th><th>Interacciones</th><th>Lectura</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Pozos de Santa Ana — rebaja de precio</td><td><span class="tag gold">Secuencia</span></td><td>3,142</td><td>1,200</td><td>11</td><td>Mayor alcance, pero interacción baja vs. exposición.</td></tr>
+          <tr><td>Pozos de Santa Ana — vivir o inversión</td><td><span class="tag gold">Secuencia</span></td><td>2,579</td><td>931</td><td>5</td><td>Generó 3 seguidores; buen tema para optimizar.</td></tr>
+          <tr><td>“La mayoría no pierde dinero por una mala propiedad…”</td><td><span class="tag">Reel</span></td><td>304</td><td>218</td><td>25</td><td>Mejor conexión: educación + riesgo + criterio profesional.</td></tr>
+          <tr><td>“Algo está cambiando…”</td><td><span class="tag">Reel</span></td><td>284</td><td>201</td><td>14</td><td>Buen contenido de marca y expectativa.</td></tr>
+          <tr><td>Inventario en alquiler amueblado</td><td><span class="tag">Reel</span></td><td>242</td><td>181</td><td>15</td><td>Funciona porque resuelve un problema práctico.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="grid three-col">
+      <article class="card">
+        <h3>Secuencias</h3>
+        <p class="metric-value">2.28%</p>
+        <p>Engagement sobre alcance. Buenas para mostrar propiedades, pero deben tener mejor historia y CTA.</p>
+      </article>
+      <article class="card">
+        <h3>Reels</h3>
+        <p class="metric-value">9.00%</p>
+        <p>Mejor formato para autoridad, educación, errores comunes y posicionamiento de Cristina.</p>
+      </article>
+      <article class="card">
+        <h3>Imágenes</h3>
+        <p class="metric-value">10.05%</p>
+        <p>Buen engagement en pequeño volumen, pero poco alcance. Usarlas como refuerzo visual.</p>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>Estrategia recomendada para el siguiente mes</h2>
+      <table>
+        <thead><tr><th>Tipo de contenido</th><th>Porcentaje sugerido</th><th>Objetivo</th><th>Ejemplo</th></tr></thead>
+        <tbody>
+          <tr><td>Propiedades con enfoque estratégico</td><td>35%</td><td>Mostrar inventario con intención comercial</td><td>“Para quién es esta propiedad y por qué puede convenirle”</td></tr>
+          <tr><td>Educación / errores / procesos</td><td>35%</td><td>Construir confianza y autoridad</td><td>“Errores antes de alquilar tu propiedad”</td></tr>
+          <tr><td>Servicio 360 / marca personal</td><td>20%</td><td>Diferenciar a Cristina de una corredora genérica</td><td>“No solo enseño propiedades, acompaño decisiones”</td></tr>
+          <tr><td>Conversión directa</td><td>10%</td><td>Generar DMs, comentarios y consultas</td><td>“Comentá inventario y te comparto la guía”</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="grid two-col">
+      <article class="card video-card">
+        <span class="tag dark">Video 1 · Autoridad</span>
+        <div class="hook">“Comprar una propiedad no empieza cuando vas a verla. Empieza mucho antes.”</div>
+        <p><strong>Idea:</strong> presupuesto, financiamiento, zona, necesidades reales, gastos adicionales y criterios de decisión.</p>
+        <p><strong>CTA:</strong> “Escribime ‘compra’ y revisamos por dónde deberías empezar.”</p>
+      </article>
+      <article class="card video-card">
+        <span class="tag dark">Video 2 · Servicio 360</span>
+        <div class="hook">“Hay corredores que solo enseñan propiedades. Pero un buen proceso necesita mucho más.”</div>
+        <p><strong>Idea:</strong> explicar acompañamiento, criterio, orden, contactos, estrategia y seguimiento.</p>
+        <p><strong>CTA:</strong> “Si querés un proceso más claro y acompañado, escribime por DM.”</p>
+      </article>
+      <article class="card video-card">
+        <span class="tag dark">Video 3 · Propietarios</span>
+        <div class="hook">“Antes de alquilar tu propiedad, hay un detalle que puede evitarte muchos problemas.”</div>
+        <p><strong>Idea:</strong> inventario, condiciones claras, filtro, contrato y fotografías del estado de entrega.</p>
+        <p><strong>CTA:</strong> “Comentá ‘inventario’ y te comparto una guía básica.”</p>
+      </article>
+      <article class="card video-card">
+        <span class="tag dark">Video 4 · Educación</span>
+        <div class="hook">“En bienes raíces, elegir solo por precio puede salir caro.”</div>
+        <p><strong>Idea:</strong> ubicación, liquidez, mantenimiento, seguridad, plusvalía y facilidad de renta o venta futura.</p>
+        <p><strong>CTA:</strong> “Si estás comparando opciones, escribime y lo revisamos con criterio.”</p>
+      </article>
+    </section>
+
+    <section class="cta-box">
+      <div>
+        <h2>Conclusión estratégica</h2>
+        <p>El perfil tiene señales positivas: las propiedades generan exposición, pero el mayor potencial está en usar el contenido educativo para posicionar a Cristina como asesora experta, humana y confiable. La meta del próximo mes debe ser convertir alcance en conversaciones reales.</p>
+      </div>
+      <span class="tag gold">Prioridad: más DMs calificados</span>
+    </section>
+
+    <p class="footer">Dashboard preparado para Luma Solutions · Fuente: CSV Instagram Apr 09–May 08, 2026</p>
+  </main>
+
+  <script>
+    const colors = {
+      brown: '#5b4632',
+      gold: '#b18a55',
+      green: '#63725a',
+      cream: '#e5d8c8',
+      ink: '#211b16'
+    };
+
+    Chart.defaults.font.family = 'Inter, system-ui, sans-serif';
+    Chart.defaults.color = '#75685c';
+
+    new Chart(document.getElementById('formatChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Secuencias', 'Reels', 'Imágenes'],
+        datasets: [
+          { label: 'Visualizaciones', data: [7088, 830, 362], backgroundColor: colors.gold, borderRadius: 12 },
+          { label: 'Alcance', data: [2549, 600, 189], backgroundColor: colors.green, borderRadius: 12 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { position: 'bottom' } },
+        scales: { x: { grid: { display: false } }, y: { grid: { color: 'rgba(117,104,92,.16)' } } }
+      }
+    });
+
+    new Chart(document.getElementById('engagementChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Secuencias', 'Reels', 'Imágenes'],
+        datasets: [{
+          label: 'Interacciones',
+          data: [58, 54, 19],
+          backgroundColor: [colors.gold, colors.brown, colors.green],
+          borderColor: '#fffaf3',
+          borderWidth: 5,
+          hoverOffset: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { position: 'bottom' } },
+        cutout: '64%'
+      }
+    });
+  </script>
+</body>
+</html>
