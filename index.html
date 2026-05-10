@@ -3,494 +3,269 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard Instagram | Cristina Blanco / Caray</title>
+  <title>Dashboard Ejecutivo Instagram | Cristina Blanco / Caray</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
-      --bg: #f6f1ea;
-      --card: #fffaf3;
-      --ink: #211b16;
+      --bg: #f5efe6;
+      --paper: #fffaf2;
+      --paper-2: #fbf3e8;
+      --ink: #1f1914;
       --muted: #75685c;
-      --line: #e5d8c8;
-      --gold: #b18a55;
-      --brown: #5b4632;
-      --cream: #fbf6ef;
-      --green: #63725a;
-      --shadow: 0 18px 45px rgba(62, 43, 26, 0.08);
-      --radius: 22px;
+      --line: #e4d5c3;
+      --gold: #b78d50;
+      --gold-2: #d8bd8e;
+      --brown: #5a412d;
+      --black: #17120f;
+      --green: #64715b;
+      --red: #8a4b3c;
+      --shadow: 0 24px 70px rgba(48, 31, 17, .10);
+      --radius: 26px;
     }
-
     * { box-sizing: border-box; }
-
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
+      color: var(--ink);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(177, 138, 85, 0.18), transparent 32rem),
-        linear-gradient(135deg, #f8f2ea 0%, #efe3d3 100%);
-      color: var(--ink);
       line-height: 1.5;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(183,141,80,.22), transparent 34rem),
+        radial-gradient(circle at 90% 18%, rgba(90,65,45,.10), transparent 28rem),
+        linear-gradient(135deg, #f9f2e9 0%, #efe1cf 100%);
     }
-
-    .page {
-      max-width: 1320px;
-      margin: 0 auto;
-      padding: 32px 22px 56px;
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: 1.35fr 0.65fr;
-      gap: 22px;
-      align-items: stretch;
-      margin-bottom: 22px;
-    }
-
-    .hero-main, .hero-side, .card {
-      background: rgba(255, 250, 243, 0.88);
-      border: 1px solid rgba(229, 216, 200, 0.9);
+    .page { max-width: 1320px; margin: 0 auto; padding: 32px 22px 64px; }
+    .hero, .grid { display: grid; gap: 20px; }
+    .hero { grid-template-columns: 1.45fr .55fr; margin-bottom: 20px; }
+    .card, .hero-main, .hero-side {
+      background: rgba(255,250,242,.91);
+      border: 1px solid rgba(228,213,195,.92);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
     }
-
-    .hero-main { padding: 34px; }
-    .hero-side { padding: 26px; }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(177, 138, 85, 0.13);
-      color: var(--brown);
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: .04em;
-      text-transform: uppercase;
-      margin-bottom: 18px;
-    }
-
-    h1 {
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(34px, 5vw, 62px);
-      line-height: 0.98;
-      margin: 0 0 18px;
-      letter-spacing: -0.04em;
-    }
-
-    h2 {
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 30px;
-      margin: 0 0 16px;
-      letter-spacing: -0.025em;
-    }
-
-    h3 { margin: 0 0 8px; font-size: 18px; }
+    .hero-main { padding: 38px; position: relative; overflow: hidden; }
+    .hero-main:after { content: ""; position: absolute; inset: auto -90px -120px auto; width: 300px; height: 300px; border-radius: 50%; background: rgba(183,141,80,.13); }
+    .hero-side { padding: 28px; display: grid; align-content: space-between; }
+    .eyebrow { display: inline-flex; gap: 8px; align-items: center; padding: 8px 12px; border-radius: 999px; background: rgba(183,141,80,.14); color: var(--brown); font-size: 12px; font-weight: 850; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 18px; }
+    h1, h2 { font-family: Georgia, "Times New Roman", serif; letter-spacing: -.04em; line-height: 1.02; color: var(--ink); }
+    h1 { font-size: clamp(38px, 6vw, 76px); margin: 0 0 16px; max-width: 880px; }
+    h2 { font-size: clamp(28px, 3vw, 40px); margin: 0 0 14px; }
+    h3 { margin: 0 0 8px; font-size: 18px; letter-spacing: -.01em; }
     p { margin: 0; color: var(--muted); }
-
-    .hero-copy {
-      max-width: 830px;
-      font-size: 18px;
-      color: var(--muted);
-    }
-
-    .pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 24px;
-    }
-
-    .pill {
-      padding: 10px 13px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.45);
-      color: var(--brown);
-      font-size: 14px;
-      font-weight: 650;
-    }
-
-    .side-title {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      color: var(--gold);
-      font-weight: 800;
-      margin-bottom: 12px;
-    }
-
-    .side-number {
-      font-size: 42px;
-      font-weight: 850;
-      letter-spacing: -0.04em;
-      margin-bottom: 4px;
-    }
-
-    .side-note { color: var(--muted); font-size: 15px; }
-
-    .grid {
-      display: grid;
-      gap: 18px;
-      margin-bottom: 22px;
-    }
-
-    .metrics {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .card { padding: 24px; }
-
-    .metric-label {
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 750;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      margin-bottom: 10px;
-    }
-
-    .metric-value {
-      font-size: 34px;
-      font-weight: 850;
-      letter-spacing: -0.035em;
-      color: var(--ink);
-    }
-
-    .metric-sub {
-      color: var(--muted);
-      font-size: 14px;
-      margin-top: 4px;
-    }
-
-    .two-col { grid-template-columns: 1fr 1fr; }
-    .three-col { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-
-    .insight {
-      border-left: 4px solid var(--gold);
-      padding-left: 15px;
-      margin-top: 14px;
-    }
-
-    .chart-wrap {
-      height: 310px;
-      position: relative;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      overflow: hidden;
-      border-radius: 16px;
-      font-size: 14px;
-    }
-
-    th, td {
-      padding: 13px 12px;
-      border-bottom: 1px solid var(--line);
-      text-align: left;
-      vertical-align: top;
-    }
-
-    th {
-      background: rgba(177, 138, 85, 0.13);
-      color: var(--brown);
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-    }
-
+    .lead { max-width: 860px; font-size: 18px; color: #625447; }
+    .pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+    .pill, .tag { display: inline-flex; align-items: center; width: fit-content; border-radius: 999px; font-weight: 800; }
+    .pill { padding: 10px 13px; border: 1px solid var(--line); background: rgba(255,255,255,.52); color: var(--brown); font-size: 14px; }
+    .tag { padding: 6px 10px; background: rgba(100,113,91,.13); color: var(--green); font-size: 12px; }
+    .tag.gold { background: rgba(183,141,80,.16); color: var(--brown); }
+    .tag.dark { background: rgba(31,25,20,.09); color: var(--ink); }
+    .tag.red { background: rgba(138,75,60,.12); color: var(--red); }
+    .side-label { color: var(--gold); font-size: 12px; font-weight: 850; letter-spacing: .09em; text-transform: uppercase; }
+    .side-number { font-size: 54px; font-weight: 900; letter-spacing: -.06em; margin: 8px 0 4px; }
+    .side-rule { height: 1px; background: var(--line); margin: 22px 0; }
+    .metrics { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: 20px; }
+    .two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .card { padding: 25px; margin-bottom: 20px; }
+    .metric-label { color: var(--muted); font-size: 12px; font-weight: 850; letter-spacing: .07em; text-transform: uppercase; }
+    .metric-value { display: block; font-size: 36px; line-height: 1; font-weight: 900; letter-spacing: -.045em; color: var(--ink); margin: 10px 0 5px; }
+    .metric-sub { font-size: 14px; color: var(--muted); }
+    .note { border-left: 4px solid var(--gold); padding-left: 15px; margin-top: 15px; }
+    .note strong, p strong, li strong { color: var(--ink); }
+    .alert { background: linear-gradient(135deg, rgba(31,25,20,.95), rgba(90,65,45,.94)); color: #fffaf2; }
+    .alert p, .alert h2 { color: rgba(255,250,242,.82); }
+    .alert h2 { color: #fffaf2; }
+    .list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .list li { background: rgba(255,255,255,.5); border: 1px solid var(--line); border-radius: 18px; padding: 15px; color: var(--muted); }
+    .alert .list li { background: rgba(255,250,242,.08); border-color: rgba(255,250,242,.17); color: rgba(255,250,242,.82); }
+    table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 18px; font-size: 14px; }
+    th, td { padding: 13px 12px; border-bottom: 1px solid var(--line); vertical-align: top; text-align: left; }
+    th { background: rgba(183,141,80,.13); color: var(--brown); font-size: 11px; letter-spacing: .07em; text-transform: uppercase; }
     tr:last-child td { border-bottom: 0; }
-
-    .tag {
-      display: inline-flex;
-      padding: 5px 9px;
-      border-radius: 999px;
-      background: rgba(99, 114, 90, .13);
-      color: var(--green);
-      font-weight: 750;
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
-    .tag.gold { background: rgba(177, 138, 85, .16); color: var(--brown); }
-    .tag.dark { background: rgba(33, 27, 22, .08); color: var(--ink); }
-
-    .list {
-      display: grid;
-      gap: 12px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .list li {
-      background: rgba(255,255,255,.45);
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 15px;
-    }
-
-    .video-card {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .video-card .hook {
-      font-family: Georgia, "Times New Roman", serif;
-      color: var(--ink);
-      font-size: 21px;
-      line-height: 1.15;
-    }
-
-    .cta-box {
-      background: #211b16;
-      color: #fffaf3;
-      border-radius: var(--radius);
-      padding: 30px;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 20px;
-      align-items: center;
-      box-shadow: var(--shadow);
-    }
-
-    .cta-box p { color: rgba(255,250,243,.78); }
-    .cta-box h2 { margin-bottom: 8px; }
-
-    .footer {
-      color: var(--muted);
-      text-align: center;
-      margin-top: 22px;
-      font-size: 13px;
-    }
-
-    @media (max-width: 960px) {
-      .hero, .two-col, .three-col { grid-template-columns: 1fr; }
-      .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .cta-box { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 560px) {
-      .page { padding: 18px 12px 36px; }
-      .hero-main, .hero-side, .card { padding: 20px; }
-      .metrics { grid-template-columns: 1fr; }
-      table { font-size: 12px; }
-      th, td { padding: 10px 8px; }
-    }
-
-    @media print {
-      body { background: #fff; }
-      .hero-main, .hero-side, .card, .cta-box { box-shadow: none; break-inside: avoid; }
-      .page { max-width: 100%; }
-    }
+    .chart-wrap { height: 310px; position: relative; }
+    .quote { font-family: Georgia, "Times New Roman", serif; font-size: 22px; color: var(--ink); line-height: 1.22; }
+    .script-card { display: grid; gap: 10px; }
+    .script-card p { font-size: 14px; }
+    .footer { text-align: center; color: var(--muted); font-size: 13px; margin-top: 22px; }
+    .print-break { break-inside: avoid; }
+    @media (max-width: 980px) { .hero, .two, .three, .four { grid-template-columns: 1fr; } .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 560px) { .page { padding: 18px 12px 42px; } .hero-main, .hero-side, .card { padding: 20px; } .metrics { grid-template-columns: 1fr; } table { font-size: 12px; } th, td { padding: 10px 8px; } }
+    @media print { body { background: white; } .card, .hero-main, .hero-side { box-shadow: none; break-inside: avoid; } .page { max-width: none; } }
   </style>
 </head>
 <body>
-  <main class="page">
-    <section class="hero">
-      <div class="hero-main">
-        <div class="eyebrow">Instagram Performance Dashboard</div>
-        <h1>Cristina Blanco / Caray</h1>
-        <p class="hero-copy">
-          Reporte de desempeño del 9 de abril al 8 de mayo de 2026. El análisis muestra que las propiedades generan alcance, pero los contenidos educativos y de proceso generan mayor confianza e interacción proporcional.
-        </p>
-        <div class="pill-row">
-          <span class="pill">Cliente Primero</span>
-          <span class="pill">Servicio 360</span>
-          <span class="pill">Marketing inmobiliario premium</span>
-          <span class="pill">Estrategia para grabación</span>
-        </div>
+<main class="page">
+  <section class="hero">
+    <div class="hero-main">
+      <div class="eyebrow">Reporte ejecutivo · Instagram</div>
+      <h1>Cristina Blanco / Caray</h1>
+      <p class="lead">Desempeño del 9 de abril al 8 de mayo de 2026 + plan de contenido para mayo. La lectura clave: las dos publicaciones de Pozos de Santa Ana fueron pautadas durante tres días, por eso su alcance debe analizarse separado del comportamiento orgánico.</p>
+      <div class="pills">
+        <span class="pill">Cliente Primero</span><span class="pill">Servicio 360</span><span class="pill">Real estate premium</span><span class="pill">DMs calificados</span>
       </div>
-      <aside class="hero-side">
-        <div class="side-title">Lectura principal</div>
-        <div class="side-number">3.92%</div>
-        <p class="side-note">Tasa de interacción sobre alcance total. Hay oportunidad de convertir mejor el alcance en comentarios, guardados, DMs y seguidores.</p>
-      </aside>
-    </section>
-
-    <section class="grid metrics">
-      <article class="card"><div class="metric-label">Publicaciones</div><div class="metric-value">21</div><div class="metric-sub">piezas analizadas</div></article>
-      <article class="card"><div class="metric-label">Visualizaciones</div><div class="metric-value">8,280</div><div class="metric-sub">total del periodo</div></article>
-      <article class="card"><div class="metric-label">Alcance</div><div class="metric-value">3,338</div><div class="metric-sub">cuentas alcanzadas</div></article>
-      <article class="card"><div class="metric-label">Interacciones</div><div class="metric-value">131</div><div class="metric-sub">likes + comentarios + guardados + compartidos</div></article>
-      <article class="card"><div class="metric-label">Me gusta</div><div class="metric-value">102</div><div class="metric-sub">reacción principal</div></article>
-      <article class="card"><div class="metric-label">Compartidos</div><div class="metric-value">13</div><div class="metric-sub">señal de valor útil</div></article>
-      <article class="card"><div class="metric-label">Guardados</div><div class="metric-value">11</div><div class="metric-sub">contenido para consultar luego</div></article>
-      <article class="card"><div class="metric-label">Seguidores</div><div class="metric-value">4</div><div class="metric-sub">conversión baja: 0.12% sobre alcance</div></article>
-    </section>
-
-    <section class="grid two-col">
-      <article class="card">
-        <h2>Desempeño por formato</h2>
-        <div class="chart-wrap"><canvas id="formatChart"></canvas></div>
-        <div class="insight"><p><strong>Insight:</strong> las secuencias concentran el alcance, pero los reels e imágenes generan más interacción proporcional. La estrategia debe combinar propiedades + educación + marca personal.</p></div>
-      </article>
-      <article class="card">
-        <h2>Interacción por formato</h2>
-        <div class="chart-wrap"><canvas id="engagementChart"></canvas></div>
-        <div class="insight"><p><strong>Lectura:</strong> los reels alcanzaron 9.00% de interacción sobre alcance, mucho más que las secuencias con 2.28%. Ahí hay una oportunidad clara para el contenido de autoridad.</p></div>
-      </article>
-    </section>
-
-    <section class="grid two-col">
-      <article class="card">
-        <h2>Qué funcionó</h2>
-        <ul class="list">
-          <li><strong>Propiedades en Pozos de Santa Ana:</strong> lograron el mayor alcance del periodo.</li>
-          <li><strong>Reels educativos:</strong> conectaron mejor con la audiencia y generaron más interacción proporcional.</li>
-          <li><strong>Contenido de transformación:</strong> el mensaje “Algo está cambiando…” generó curiosidad sin sonar agresivo.</li>
-          <li><strong>Temas de prevención:</strong> inventarios, errores y claridad en procesos funcionan bien para Servicio 360.</li>
-        </ul>
-      </article>
-      <article class="card">
-        <h2>Qué mejorar</h2>
-        <ul class="list">
-          <li><strong>Conversión:</strong> 4 seguimientos es bajo para el alcance obtenido. Faltan CTAs más específicos.</li>
-          <li><strong>Propiedades:</strong> necesitan más enfoque: cliente ideal, diferenciador, razón de valor y siguiente paso.</li>
-          <li><strong>Conversación:</strong> solo 5 comentarios; hay que pedir respuestas fáciles y concretas.</li>
-          <li><strong>Autoridad:</strong> publicar más criterios, errores comunes, checklists y explicación del acompañamiento.</li>
-        </ul>
-      </article>
-    </section>
-
-    <section class="card">
-      <h2>Top publicaciones del periodo</h2>
-      <table>
-        <thead>
-          <tr><th>Contenido</th><th>Formato</th><th>Visualizaciones</th><th>Alcance</th><th>Interacciones</th><th>Lectura</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Pozos de Santa Ana — rebaja de precio</td><td><span class="tag gold">Secuencia</span></td><td>3,142</td><td>1,200</td><td>11</td><td>Mayor alcance, pero interacción baja vs. exposición.</td></tr>
-          <tr><td>Pozos de Santa Ana — vivir o inversión</td><td><span class="tag gold">Secuencia</span></td><td>2,579</td><td>931</td><td>5</td><td>Generó 3 seguidores; buen tema para optimizar.</td></tr>
-          <tr><td>“La mayoría no pierde dinero por una mala propiedad…”</td><td><span class="tag">Reel</span></td><td>304</td><td>218</td><td>25</td><td>Mejor conexión: educación + riesgo + criterio profesional.</td></tr>
-          <tr><td>“Algo está cambiando…”</td><td><span class="tag">Reel</span></td><td>284</td><td>201</td><td>14</td><td>Buen contenido de marca y expectativa.</td></tr>
-          <tr><td>Inventario en alquiler amueblado</td><td><span class="tag">Reel</span></td><td>242</td><td>181</td><td>15</td><td>Funciona porque resuelve un problema práctico.</td></tr>
-        </tbody>
-      </table>
-    </section>
-
-    <section class="grid three-col">
-      <article class="card">
-        <h3>Secuencias</h3>
-        <p class="metric-value">2.28%</p>
-        <p>Engagement sobre alcance. Buenas para mostrar propiedades, pero deben tener mejor historia y CTA.</p>
-      </article>
-      <article class="card">
-        <h3>Reels</h3>
-        <p class="metric-value">9.00%</p>
-        <p>Mejor formato para autoridad, educación, errores comunes y posicionamiento de Cristina.</p>
-      </article>
-      <article class="card">
-        <h3>Imágenes</h3>
-        <p class="metric-value">10.05%</p>
-        <p>Buen engagement en pequeño volumen, pero poco alcance. Usarlas como refuerzo visual.</p>
-      </article>
-    </section>
-
-    <section class="card">
-      <h2>Estrategia recomendada para el siguiente mes</h2>
-      <table>
-        <thead><tr><th>Tipo de contenido</th><th>Porcentaje sugerido</th><th>Objetivo</th><th>Ejemplo</th></tr></thead>
-        <tbody>
-          <tr><td>Propiedades con enfoque estratégico</td><td>35%</td><td>Mostrar inventario con intención comercial</td><td>“Para quién es esta propiedad y por qué puede convenirle”</td></tr>
-          <tr><td>Educación / errores / procesos</td><td>35%</td><td>Construir confianza y autoridad</td><td>“Errores antes de alquilar tu propiedad”</td></tr>
-          <tr><td>Servicio 360 / marca personal</td><td>20%</td><td>Diferenciar a Cristina de una corredora genérica</td><td>“No solo enseño propiedades, acompaño decisiones”</td></tr>
-          <tr><td>Conversión directa</td><td>10%</td><td>Generar DMs, comentarios y consultas</td><td>“Comentá inventario y te comparto la guía”</td></tr>
-        </tbody>
-      </table>
-    </section>
-
-    <section class="grid two-col">
-      <article class="card video-card">
-        <span class="tag dark">Video 1 · Autoridad</span>
-        <div class="hook">“Comprar una propiedad no empieza cuando vas a verla. Empieza mucho antes.”</div>
-        <p><strong>Idea:</strong> presupuesto, financiamiento, zona, necesidades reales, gastos adicionales y criterios de decisión.</p>
-        <p><strong>CTA:</strong> “Escribime ‘compra’ y revisamos por dónde deberías empezar.”</p>
-      </article>
-      <article class="card video-card">
-        <span class="tag dark">Video 2 · Servicio 360</span>
-        <div class="hook">“Hay corredores que solo enseñan propiedades. Pero un buen proceso necesita mucho más.”</div>
-        <p><strong>Idea:</strong> explicar acompañamiento, criterio, orden, contactos, estrategia y seguimiento.</p>
-        <p><strong>CTA:</strong> “Si querés un proceso más claro y acompañado, escribime por DM.”</p>
-      </article>
-      <article class="card video-card">
-        <span class="tag dark">Video 3 · Propietarios</span>
-        <div class="hook">“Antes de alquilar tu propiedad, hay un detalle que puede evitarte muchos problemas.”</div>
-        <p><strong>Idea:</strong> inventario, condiciones claras, filtro, contrato y fotografías del estado de entrega.</p>
-        <p><strong>CTA:</strong> “Comentá ‘inventario’ y te comparto una guía básica.”</p>
-      </article>
-      <article class="card video-card">
-        <span class="tag dark">Video 4 · Educación</span>
-        <div class="hook">“En bienes raíces, elegir solo por precio puede salir caro.”</div>
-        <p><strong>Idea:</strong> ubicación, liquidez, mantenimiento, seguridad, plusvalía y facilidad de renta o venta futura.</p>
-        <p><strong>CTA:</strong> “Si estás comparando opciones, escribime y lo revisamos con criterio.”</p>
-      </article>
-    </section>
-
-    <section class="cta-box">
+    </div>
+    <aside class="hero-side">
       <div>
-        <h2>Conclusión estratégica</h2>
-        <p>El perfil tiene señales positivas: las propiedades generan exposición, pero el mayor potencial está en usar el contenido educativo para posicionar a Cristina como asesora experta, humana y confiable. La meta del próximo mes debe ser convertir alcance en conversaciones reales.</p>
+        <div class="side-label">Lectura principal</div>
+        <div class="side-number">3.92%</div>
+        <p>Tasa de interacción sobre alcance total. El siguiente paso no es buscar más vistas, sino convertir mejor el alcance en DMs, guardados, comentarios y consultas.</p>
       </div>
-      <span class="tag gold">Prioridad: más DMs calificados</span>
-    </section>
+      <div>
+        <div class="side-rule"></div>
+        <div class="side-label">Prioridad del mes</div>
+        <p><strong>Separar pauta vs. orgánico</strong> y convertir la estrategia en conversaciones medibles por palabra clave.</p>
+      </div>
+    </aside>
+  </section>
 
-    <p class="footer">Dashboard preparado para Luma Solutions · Fuente: CSV Instagram Apr 09–May 08, 2026</p>
-  </main>
+  <section class="grid metrics">
+    <article class="card"><div class="metric-label">Publicaciones</div><span class="metric-value">21</span><div class="metric-sub">piezas analizadas</div></article>
+    <article class="card"><div class="metric-label">Visualizaciones</div><span class="metric-value">8,280</span><div class="metric-sub">total del periodo</div></article>
+    <article class="card"><div class="metric-label">Alcance</div><span class="metric-value">3,338</span><div class="metric-sub">cuentas alcanzadas</div></article>
+    <article class="card"><div class="metric-label">Interacciones</div><span class="metric-value">131</span><div class="metric-sub">likes + comentarios + guardados + compartidos</div></article>
+    <article class="card"><div class="metric-label">Me gusta</div><span class="metric-value">102</span><div class="metric-sub">reacción principal</div></article>
+    <article class="card"><div class="metric-label">Compartidos</div><span class="metric-value">13</span><div class="metric-sub">señal de utilidad</div></article>
+    <article class="card"><div class="metric-label">Guardados</div><span class="metric-value">11</span><div class="metric-sub">contenido consultable</div></article>
+    <article class="card"><div class="metric-label">Seguidores</div><span class="metric-value">4</span><div class="metric-sub">0.12% sobre alcance</div></article>
+  </section>
 
-  <script>
-    const colors = {
-      brown: '#5b4632',
-      gold: '#b18a55',
-      green: '#63725a',
-      cream: '#e5d8c8',
-      ink: '#211b16'
-    };
+  <section class="card alert">
+    <h2>Ajuste crítico: alcance pagado ≠ señal orgánica</h2>
+    <p>Las dos publicaciones con más visualizaciones —Pozos de Santa Ana rebaja de precio y Pozos de Santa Ana vivir o inversión— fueron pagadas como anuncios por tres días. Eso explica su volumen y evita una conclusión equivocada: no son necesariamente las piezas que más conectaron de forma orgánica.</p>
+    <div class="grid three" style="margin-top:18px;">
+      <div><span class="tag gold">Pauta</span><p><strong>Qué mide:</strong> capacidad de exposición, segmentación, costo y potencial de consultas.</p></div>
+      <div><span class="tag">Orgánico</span><p><strong>Qué mide:</strong> confianza, utilidad, afinidad, guardados, compartidos y comentarios.</p></div>
+      <div><span class="tag dark">Decisión</span><p><strong>Cómo actuar:</strong> usar pauta solo con argumento fuerte, público claro y CTA medible.</p></div>
+    </div>
+  </section>
 
-    Chart.defaults.font.family = 'Inter, system-ui, sans-serif';
-    Chart.defaults.color = '#75685c';
+  <section class="grid two">
+    <article class="card">
+      <h2>Desempeño por formato</h2>
+      <div class="chart-wrap"><canvas id="formatChart"></canvas></div>
+      <div class="note"><p><strong>Lectura:</strong> las secuencias concentran vistas y alcance por las piezas pautadas. Para aprender de contenido orgánico, los reels educativos son más confiables.</p></div>
+    </article>
+    <article class="card">
+      <h2>Calidad de interacción</h2>
+      <div class="chart-wrap"><canvas id="engagementChart"></canvas></div>
+      <div class="note"><p><strong>Lectura:</strong> reels: 9.00% de interacción sobre alcance; secuencias: 2.28%. La educación y el criterio profesional generan señales más fuertes que la simple exposición de propiedad.</p></div>
+    </article>
+  </section>
 
-    new Chart(document.getElementById('formatChart'), {
-      type: 'bar',
-      data: {
-        labels: ['Secuencias', 'Reels', 'Imágenes'],
-        datasets: [
-          { label: 'Visualizaciones', data: [7088, 830, 362], backgroundColor: colors.gold, borderRadius: 12 },
-          { label: 'Alcance', data: [2549, 600, 189], backgroundColor: colors.green, borderRadius: 12 }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { position: 'bottom' } },
-        scales: { x: { grid: { display: false } }, y: { grid: { color: 'rgba(117,104,92,.16)' } } }
-      }
-    });
+  <section class="card">
+    <h2>Top publicaciones y lectura ejecutiva</h2>
+    <table>
+      <thead><tr><th>Contenido</th><th>Formato</th><th>Visualizaciones</th><th>Alcance</th><th>Interacciones</th><th>Lectura correcta</th></tr></thead>
+      <tbody>
+        <tr><td>Pozos de Santa Ana — rebaja de precio</td><td><span class="tag gold">Secuencia · pagada</span></td><td>3,142</td><td>1,200</td><td>11</td><td>Alcance alto por pauta; revisar DMs/consultas antes de considerarla ganadora.</td></tr>
+        <tr><td>Pozos de Santa Ana — vivir o inversión</td><td><span class="tag gold">Secuencia · pagada</span></td><td>2,579</td><td>931</td><td>5</td><td>Buena exposición, pero interacción baja. Necesita CTA y argumento más específico.</td></tr>
+        <tr><td>“La mayoría no pierde dinero por una mala propiedad…”</td><td><span class="tag">Reel · orgánico</span></td><td>304</td><td>218</td><td>25</td><td>Mejor señal orgánica: educación + riesgo + criterio profesional.</td></tr>
+        <tr><td>“Algo está cambiando…”</td><td><span class="tag">Reel · orgánico</span></td><td>284</td><td>201</td><td>14</td><td>Buen contenido de transición de marca; despierta curiosidad sin sonar agresivo.</td></tr>
+        <tr><td>Inventario en alquiler amueblado</td><td><span class="tag">Reel · orgánico</span></td><td>242</td><td>181</td><td>15</td><td>Funciona por resolver un problema concreto: inventario, seguridad y claridad.</td></tr>
+      </tbody>
+    </table>
+  </section>
 
-    new Chart(document.getElementById('engagementChart'), {
-      type: 'doughnut',
-      data: {
-        labels: ['Secuencias', 'Reels', 'Imágenes'],
-        datasets: [{
-          label: 'Interacciones',
-          data: [58, 54, 19],
-          backgroundColor: [colors.gold, colors.brown, colors.green],
-          borderColor: '#fffaf3',
-          borderWidth: 5,
-          hoverOffset: 8
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { position: 'bottom' } },
-        cutout: '64%'
-      }
-    });
-  </script>
+  <section class="grid two">
+    <article class="card">
+      <h2>Qué funcionó</h2>
+      <ul class="list">
+        <li><strong>Educación con riesgo claro:</strong> errores, pérdidas, inventarios y decisiones mal tomadas activan atención útil.</li>
+        <li><strong>Criterio profesional:</strong> el contenido que explica cómo decidir posiciona mejor a Cristina que solo mostrar inmuebles.</li>
+        <li><strong>Curiosidad de marca:</strong> “Algo está cambiando…” aporta transición y expectativa sin prometer de más.</li>
+        <li><strong>Pauta con propiedades:</strong> puede ampliar alcance, siempre que se mida como campaña y no como éxito orgánico.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h2>Qué cambia desde ahora</h2>
+      <ul class="list">
+        <li><strong>Propiedades con historia:</strong> cada inmueble debe decir para quién es, qué resuelve y por qué conviene.</li>
+        <li><strong>CTAs medibles:</strong> usar palabra clave por objetivo para rastrear DMs: VENDER, COMPRAR, VALORACIÓN, ALQUILAR.</li>
+        <li><strong>Pauta separada:</strong> reportar resultados pagados aparte: inversión, alcance, mensajes, consultas y visitas.</li>
+        <li><strong>Más interacción simple:</strong> preguntas fáciles, encuestas y cajas de dudas para subir comentarios y DMs.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="card">
+    <h2>Estrategia mensual: Cliente Primero + Servicio 360</h2>
+    <p>La idea central de mayo debe ser consistente: Cristina no solo muestra propiedades; acompaña decisiones inmobiliarias con criterio, claridad y Servicio 360. Esto convierte el calendario en una narrativa, no en publicaciones sueltas.</p>
+    <table style="margin-top:16px;">
+      <thead><tr><th>Semana</th><th>Tema central</th><th>Reel principal</th><th>Piezas visuales</th><th>Historia</th><th>Funnel</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Preparar antes de vender</td><td>Antes de vender, revise esto</td><td>Checklist, precio, presentación, cliente ideal</td><td>Encuesta sobre vender</td><td>MOFU / BOFU</td></tr>
+        <tr><td>2</td><td>Comprar con claridad</td><td>Comprar casa no empieza viendo casas</td><td>Zona, presupuesto, estilo de vida, errores</td><td>Dudas al comprar</td><td>TOFU / MOFU</td></tr>
+        <tr><td>3</td><td>Diagnóstico y Servicio 360</td><td>No baje el precio todavía</td><td>Diagnóstico, fotos, precio defendible, comprador correcto</td><td>Caja para propietarios</td><td>MOFU</td></tr>
+        <tr><td>4</td><td>Alquiler, inversión y conversión</td><td>El error al alquilar una propiedad</td><td>Contrato, inventario, perfil, propiedades destacadas</td><td>CTA a asesoría</td><td>TOFU / MOFU / BOFU</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="grid three">
+    <article class="card"><span class="tag">TOFU · 35%</span><h3>Atracción</h3><p>Errores comunes, mitos, señales de alerta y consejos fáciles de entender.</p></article>
+    <article class="card"><span class="tag gold">MOFU · 40%</span><h3>Confianza</h3><p>Servicio 360, criterios, proceso de acompañamiento y explicación clara del valor.</p></article>
+    <article class="card"><span class="tag dark">BOFU · 20%</span><h3>Conversión</h3><p>Propiedades específicas, valoración, asesoría, agenda de visita y DM con palabra clave.</p></article>
+  </section>
+
+  <section class="card">
+    <h2>Revisión de guiones para producción</h2>
+    <p>Los guiones están bien alineados con el posicionamiento premium: líneas cortas, tono claro, hooks sin “Hola, soy Cristina” y CTAs por palabra clave. El ajuste principal es de consistencia y medición.</p>
+    <div class="grid four" style="margin-top:16px;">
+      <article class="script-card"><span class="tag gold">Grabar primero</span><h3>1. Antes de vender</h3><p>Fuerte para propietarios. Mantener CTA “VENDER”. Buen BOFU si se conecta con diagnóstico inicial.</p></article>
+      <article class="script-card"><span class="tag">Grabar primero</span><h3>2. Comprar con claridad</h3><p>Excelente TOFU/MOFU. CTA “COMPRAR” claro y fácil de medir.</p></article>
+      <article class="script-card"><span class="tag gold">Grabar primero</span><h3>3. No baje el precio</h3><p>Muy buen MOFU. CTA “VALORACIÓN” debe usarse igual en caption e historia.</p></article>
+      <article class="script-card"><span class="tag dark">Marca</span><h3>4. Servicio 360</h3><p>Útil para explicar diferenciador. Evitar sonar genérico mostrando ejemplos: preparar, filtrar, negociar, revisar.</p></article>
+      <article class="script-card"><span class="tag">Grabar primero</span><h3>5. Error al alquilar</h3><p>Buen TOFU/MOFU por problema concreto. CTA “ALQUILAR” consistente.</p></article>
+      <article class="script-card"><span class="tag red">Opcional</span><h3>6–7. Local / bodega</h3><p>Solo grabar si Cristina quiere empujar comercial/industrial este mes; si no, puede distraer la narrativa residencial.</p></article>
+      <article class="script-card"><span class="tag">Alternativo</span><h3>8. Propiedad bonita</h3><p>Fuerte para compradores; usar si falta variedad o si hay propiedad visualmente atractiva.</p></article>
+      <article class="script-card"><span class="tag dark">BOFU</span><h3>9–10. Estrategia / Cliente Primero</h3><p>Buenos como refuerzo de marca y captación; cuidar no duplicar “ASESORÍA” demasiadas veces.</p></article>
+    </div>
+    <div class="note"><p><strong>Corrección importante de CTAs:</strong> hay muchas palabras posibles —VENDER, COMPRAR, VALORACIÓN, ASESORÍA, ALQUILAR, LOCAL, BODEGA, OPCIONES, ESTRATEGIA—. No están mal, pero si se usan todas en el mismo mes se fragmenta el tracking. Recomendación: para mayo medir 5 principales: VENDER, COMPRAR, VALORACIÓN, ALQUILAR y ASESORÍA. Dejar LOCAL/BODEGA solo si se activa campaña comercial específica.</p></div>
+  </section>
+
+  <section class="grid two">
+    <article class="card">
+      <h2>Cómo presentar propiedades</h2>
+      <ul class="list">
+        <li><strong>Hook:</strong> abrir con una razón de valor, no solo “en venta” o ubicación.</li>
+        <li><strong>Cliente ideal:</strong> explicar para quién tiene sentido: familia, inversionista, profesional, propietario.</li>
+        <li><strong>Diferenciador:</strong> destacar utilidad real: ubicación, distribución, rentabilidad, seguridad, estilo de vida.</li>
+        <li><strong>Criterio:</strong> conectar la propiedad con una decisión inteligente, no solo con estética.</li>
+        <li><strong>CTA:</strong> pedir acción concreta: “escriba POZOS”, “pida detalles”, “agendemos visita”.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h2>Cómo usar pauta</h2>
+      <ul class="list">
+        <li><strong>No pautar todo:</strong> elegir inmuebles con argumento comercial claro.</li>
+        <li><strong>Separar métricas:</strong> pauta y orgánico deben reportarse en bloques distintos.</li>
+        <li><strong>Medir calidad:</strong> DMs, consultas calificadas y visitas pesan más que views.</li>
+        <li><strong>Optimizar CTA:</strong> cada anuncio necesita público, promesa y siguiente paso.</li>
+        <li><strong>Retargeting suave:</strong> convertir interés de reels educativos en propiedad/asesoría.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="card print-break">
+    <h2>Cómo explicárselo a Cristina</h2>
+    <p class="quote">“Este mes vimos que las propiedades pueden generar alcance cuando usamos pauta, pero el contenido que mejor construye confianza es el educativo: errores, procesos y criterios. Por eso la estrategia no es solo publicar propiedades; es ordenar el contenido para atraer con educación, construir confianza con Servicio 360 y convertir con CTAs claros. La meta es que cada semana tenga un tema y que cada pieza empuje el mismo posicionamiento: Cristina como asesora que guía decisiones inmobiliarias con claridad.”</p>
+  </section>
+
+  <section class="card alert">
+    <h2>Conclusión estratégica</h2>
+    <p>El perfil tiene potencial claro: la pauta ayuda a ampliar exposición, pero la ventaja competitiva de Cristina está en educar, orientar y acompañar. Mayo debe enfocarse en convertir alcance —pagado u orgánico— en conversaciones reales: DMs por palabra clave, consultas calificadas y oportunidades de venta, compra o alquiler.</p>
+  </section>
+
+  <p class="footer">Dashboard preparado para Luma Solutions · Fuente: Instagram Apr 09–May 08, 2026 · Versión premium actualizada 2026-05-10</p>
+</main>
+<script>
+  const colors = { brown:'#5a412d', gold:'#b78d50', green:'#64715b', cream:'#e4d5c3', ink:'#1f1914' };
+  Chart.defaults.font.family = 'Inter, system-ui, sans-serif';
+  Chart.defaults.color = '#75685c';
+  new Chart(document.getElementById('formatChart'), { type:'bar', data:{ labels:['Secuencias','Reels','Imágenes'], datasets:[ { label:'Visualizaciones', data:[7088,830,362], backgroundColor:colors.gold, borderRadius:12 }, { label:'Alcance', data:[2549,600,189], backgroundColor:colors.green, borderRadius:12 } ] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom' } }, scales:{ x:{ grid:{ display:false } }, y:{ grid:{ color:'rgba(117,104,92,.16)' } } } } });
+  new Chart(document.getElementById('engagementChart'), { type:'doughnut', data:{ labels:['Secuencias','Reels','Imágenes'], datasets:[{ label:'Interacciones', data:[58,54,19], backgroundColor:[colors.gold,colors.brown,colors.green], borderColor:'#fffaf2', borderWidth:5, hoverOffset:8 }] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom' } }, cutout:'64%' } });
+</script>
 </body>
 </html>
